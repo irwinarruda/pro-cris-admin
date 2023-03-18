@@ -1,5 +1,5 @@
 {
-  "name": "pro-cris-dashboard",
+  "name": "pro-cris-admin",
   "scripts": {
     "dev": "solid-start dev",
     "build": "solid-start build",
