@@ -1,7 +1,7 @@
 import { JSX } from 'solid-js';
 import { Input, InputProps, InputSizes } from '~/components/atoms/Input';
 
-type TextFieldProps = JSX.InputHTMLAttributes<HTMLDivElement> & {
+type TextFieldProps = Omit<JSX.InputHTMLAttributes<HTMLDivElement>, 'onChange'> & {
   id?: string;
   name?: string;
   errorText?: string;
@@ -9,6 +9,7 @@ type TextFieldProps = JSX.InputHTMLAttributes<HTMLDivElement> & {
   value?: string;
   label?: string;
   type?: string;
+  placeholder?: string;
   InputProps?: InputProps;
   onChange?: (
     value: string,
@@ -26,6 +27,7 @@ export const TextField = ({
   value,
   type,
   errorText,
+  placeholder,
   onChange,
   InputProps,
   ...props
@@ -37,7 +39,16 @@ export const TextField = ({
           {label}
         </label>
       )}
-      <Input id={id} name={name} errorText={errorText} onChange={onChange} value={value} type={type} {...InputProps} />
+      <Input
+        id={id}
+        name={name}
+        errorText={errorText}
+        onChange={onChange}
+        value={value}
+        type={type}
+        placeholder={placeholder}
+        {...InputProps}
+      />
     </div>
   );
 };

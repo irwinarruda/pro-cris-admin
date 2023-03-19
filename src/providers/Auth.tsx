@@ -12,8 +12,8 @@ export type AuthContextProps = {
   user: Accessor<User | null>;
   isAuth: Accessor<boolean>;
   showSplash: Accessor<boolean>;
-  shouldRedirect: (value: boolean) => boolean;
-  redirectPath: (value: boolean) => string;
+  shouldRedirect: Accessor<boolean>;
+  redirectPath: Accessor<string>;
   signIn: (args: SignInDTO) => Promise<void>;
   signOut: () => Promise<void>;
   hydrate: ({ user }: { user: User }) => void;
@@ -25,15 +25,24 @@ const AuthContext = createContext({} as AuthContextProps);
 
 export function AuthProvider(props: { children: JSX.Element }) {
   const location = useLocation();
-  console.log('location', location.pathname);
   const [showSplash, setShowSplash] = createSignal(true);
   const [user, setAuth] = createSignal<User | null>(null);
   const isAuth = createMemo(() => !!user());
+  const shouldRedirect = createMemo(() => {
+    if (isAuth() === protectedRoutes.includes(location.pathname)) return false;
+    return true;
+  });
+  const redirectPath = createMemo(() => {
+    if (isAuth()) return '/admin';
+    return '/admin/signin';
+  });
 
   const value = {
     user,
     isAuth,
     showSplash,
+    shouldRedirect,
+    redirectPath,
     async signIn(args: SignInDTO) {
       const user = await UserService.signIn(args);
       setAuth(user);
@@ -41,14 +50,6 @@ export function AuthProvider(props: { children: JSX.Element }) {
     async signOut() {
       await UserService.signOut();
       setAuth(null);
-    },
-    shouldRedirect(isAuthenticated: boolean) {
-      if (isAuthenticated === protectedRoutes.includes(location.pathname)) return false;
-      return true;
-    },
-    redirectPath(isAuthenticated: boolean) {
-      if (isAuthenticated) return '/admin';
-      return '/admin/signin';
     },
     hydrate({ user }: { user: User }) {
       setAuth(user);

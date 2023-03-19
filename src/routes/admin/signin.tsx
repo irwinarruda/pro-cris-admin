@@ -1,15 +1,8 @@
 import { createSignal } from 'solid-js';
-import { createRouteData } from 'solid-start';
 import { Button } from '~/components/atoms/Button';
 import { ProCrisLogo } from '~/components/atoms/ProCrisLogo';
 import { TextField } from '~/components/molecules/TextField';
 import { useAuth } from '~/providers/Auth';
-
-export function routeData() {
-  return createRouteData(() => ({
-    props: { title: 'Pro cris dashboard' },
-  }));
-}
 
 export default function SignIn() {
   const { signIn } = useAuth();
@@ -22,8 +15,6 @@ export default function SignIn() {
     },
   ) {
     e.preventDefault();
-    console.log('email', email());
-    console.log('password', password());
     await signIn({ email: email(), password: password() });
   }
 

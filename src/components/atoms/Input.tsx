@@ -18,13 +18,14 @@ export const InputSizes = {
   },
 };
 
-export type InputProps = JSX.InputHTMLAttributes<HTMLDivElement> & {
+export type InputProps = Omit<JSX.InputHTMLAttributes<HTMLDivElement>, 'onChange'> & {
   id?: string;
   name?: string;
   errorText?: string;
   size?: keyof typeof InputSizes;
   value?: string;
   type?: string;
+  placeholder?: string;
   InputProps?: JSX.InputHTMLAttributes<HTMLInputElement>;
   ErrorTextProps?: JSX.InputHTMLAttributes<HTMLSpanElement>;
   onChange?: (
@@ -42,6 +43,7 @@ export function Input({
   size = 'md',
   value,
   type,
+  placeholder,
   InputProps,
   ErrorTextProps,
   errorText,
@@ -55,6 +57,7 @@ export function Input({
         name={name}
         value={value}
         type={type}
+        placeholder={placeholder}
         onInput={e => onChange && onChange(e.currentTarget.value, e)}
         class={`${InputSizes[size].input}w-full px-4 text-md rounded-md bg-white outline-none border-1 border-gray-200 focus:border-gold-500 focus:border-1 focus:shadow-solid focus:shadow-gold-500 transition-all`}
         {...InputProps}

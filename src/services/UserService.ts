@@ -41,15 +41,17 @@ export class UserService {
 
   public static onAuthStateChange(callback: (data: User | null) => void) {
     auth.onAuthStateChanged(user =>
-      !!user
-        ? callback({
-            id: user.uid,
-            name: user.displayName,
-            avatar: user.photoURL,
-            email: user.email!,
-            phone: user.phoneNumber,
-          })
-        : callback(null),
+      callback(
+        !!user
+          ? {
+              id: user.uid,
+              name: user.displayName,
+              avatar: user.photoURL,
+              email: user.email!,
+              phone: user.phoneNumber,
+            }
+          : null,
+      ),
     );
   }
 }
