@@ -1,3 +1,5 @@
+import { Student } from './Student';
+
 interface Appointment {
   id: string;
   id_student: string;
@@ -11,6 +13,7 @@ interface Appointment {
   is_paid: boolean;
   is_cancelled: boolean;
   observation: string;
+  student?: Student;
 }
 
 export type { Appointment };

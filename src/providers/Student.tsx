@@ -1,6 +1,7 @@
 import { Accessor, createContext, createMemo, createSignal, JSX, useContext } from 'solid-js';
 import { Student } from '~/entities/Student';
 import { StudentService } from '~/services/StudentService';
+import { areSimilar } from '~/utils/areSimilar';
 
 export type StudentContextProps = {
   students: Accessor<Student[]>;
@@ -18,7 +19,7 @@ export const StudentProvider = (props: { children: JSX.Element }) => {
   const [textFilter, setTextFilter] = createSignal('');
   const [loading, setLoading] = createSignal(false);
   const filteredStudents = createMemo(() => {
-    return students().filter(s => s.name.toLowerCase().includes(textFilter().toLowerCase()));
+    return students().filter(item => areSimilar(JSON.stringify(item), textFilter()));
   });
   const value = {
     students,

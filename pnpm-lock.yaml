@@ -16,6 +16,7 @@ specifiers:
   firebase: ^9.17.2
   postcss: ^8.4.21
   prettier: ^2.8.4
+  solid-icons: ^1.0.4
   solid-js: ^1.6.11
   solid-start: ^0.2.23
   solid-start-node: ^0.2.19
@@ -29,6 +30,7 @@ dependencies:
   '@solidjs/router': 0.7.1_solid-js@1.6.14
   date-fns: 2.29.3
   firebase: 9.17.2
+  solid-icons: 1.0.4_solid-js@1.6.14
   solid-js: 1.6.14
   solid-start: 0.2.23_ostdek7yauxasiuvaniywf7i5y
   undici: 5.20.0
@@ -4650,6 +4652,15 @@ packages:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
     engines: {node: '>=8'}
     dev: true
+
+  /solid-icons/1.0.4_solid-js@1.6.14:
+    resolution: {integrity: sha512-gJTp4in3+OYCs9WvDkSLt4Los2unR3Uoder8wjh15GsfP20xiNOLfPTJllXmn+fI8+k3x7bRYtLGIgWd9fUQug==}
+    engines: {node: '>= 16'}
+    peerDependencies:
+      solid-js: '*'
+    dependencies:
+      solid-js: 1.6.14
+    dev: false
 
   /solid-js/1.6.14:
     resolution: {integrity: sha512-9SSpGWZqzq8n/JhIt2PsYzLreG4PySmAexLnRM386oMeG5oSWa9QIRoiok45rLNJg148USEfI9wlkJkMrA2qGg==}
