@@ -64,7 +64,9 @@ function StudentsList() {
         <For each={filteredStudents()}>
           {student => (
             <div
-              class="flex items-center justify-center h-14 px-4 rounded-md"
+              class={`flex items-center justify-center h-14 px-4 rounded-md${
+                student.is_deleted ? ' border-2 border-red-500' : ''
+              }`}
               style={{ 'background-color': student.color }}
             >
               <div class="flex flex-[1.5] items-center justify-start">
@@ -152,7 +154,9 @@ function AppointmentsList() {
                   <p class="text-black text-sm font-semibold">{format(dateEnd, 'HH:mm')}</p>
                 </div>
                 <div
-                  class="flex-1 flex items-center justify-center h-14 px-4 rounded-md"
+                  class={`flex-1 flex items-center justify-center h-14 px-4 rounded-md${
+                    appointment.is_cancelled ? ' border-2 border-red-500' : ''
+                  }`}
                   style={{ 'background-color': appointment.student?.color }}
                 >
                   <div class="flex flex-[1.5] items-center justify-start">

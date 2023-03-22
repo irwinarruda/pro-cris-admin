@@ -29,7 +29,7 @@ export class AppointmentService {
       throw new ProCrisError({ title: 'Usuário não autenticado', message: 'Faça login para continuar' });
     }
     const appointmentsColl = collection(firestore, `users/${auth.currentUser.uid}/appointments`);
-    const appointmentsSnp = await getDocs(query(appointmentsColl, orderBy('date', 'asc')));
+    const appointmentsSnp = await getDocs(query(appointmentsColl, orderBy('date', 'desc')));
     const appointments = [] as Appointment[];
     for (let doc of appointmentsSnp.docs) {
       const data = doc.data();
@@ -40,7 +40,7 @@ export class AppointmentService {
       } as Appointment;
       appointments.push(obj);
     }
-    for (let i = ammountLeft - 1; i < appointments.length - 1; i++) {
+    for (let i = ammountLeft; i < appointments.length - 1; i++) {
       const appointmentsDoc = doc(firestore, `users/${auth.currentUser.uid}/appointments/${appointments[i].id}`);
       const oldAppointmentsDoc = doc(firestore, `users/${auth.currentUser.uid}/old_appointments/${appointments[i].id}`);
       const { id, ...oldAppointment } = appointments[i];

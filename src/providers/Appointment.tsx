@@ -1,5 +1,6 @@
 import { isSameDay, formatISO, parseISO, isPast } from 'date-fns';
 import { Accessor, createContext, createMemo, createSignal, JSX, useContext } from 'solid-js';
+import Swal from 'sweetalert2';
 import { Appointment } from '~/entities/Appointment';
 import { AppointmentService } from '~/services/AppointmentService';
 
@@ -55,6 +56,17 @@ export const AppointmentProvider = (props: { children: JSX.Element }) => {
       setLoading(false);
     },
     async onLeaveLast100Appointments() {
+      const { isConfirmed } = await Swal.fire({
+        icon: 'warning',
+        title: 'Atenção',
+        html: 'Deseja mesmo deixar apenas as últimas 100 aulas visíveis?',
+        confirmButtonText: 'Excluir',
+        confirmButtonColor: '#EE584F',
+        cancelButtonText: 'Cancelar',
+        showCancelButton: true,
+        reverseButtons: true,
+      });
+      if (!isConfirmed) return;
       setLoading(true);
       await AppointmentService.leaveLastAppointments(100);
       setAppointments([]);
