@@ -2,6 +2,7 @@ import { createSignal, createMemo, createContext, useContext, JSX, Accessor } fr
 import { useLocation } from 'solid-start';
 import { User } from '~/entities/User';
 import { UserService } from '~/services/UserService';
+import { removeLastSlash } from '~/utils/removeLastSlash';
 
 export type SignInDTO = {
   email: string;
@@ -29,7 +30,9 @@ export function AuthProvider(props: { children: JSX.Element }) {
   const [user, setAuth] = createSignal<User | null>(null);
   const isAuth = createMemo(() => !!user());
   const shouldRedirect = createMemo(() => {
-    if (isAuth() === protectedRoutes.includes(location.pathname)) return false;
+    if (isAuth() === !!protectedRoutes.find(route => route.startsWith(removeLastSlash(location.pathname)))) {
+      return false;
+    }
     return true;
   });
   const redirectPath = createMemo(() => {

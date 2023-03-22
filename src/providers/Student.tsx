@@ -19,7 +19,9 @@ export const StudentProvider = (props: { children: JSX.Element }) => {
   const [textFilter, setTextFilter] = createSignal('');
   const [loading, setLoading] = createSignal(false);
   const filteredStudents = createMemo(() => {
-    return students().filter(item => areSimilar(JSON.stringify(item), textFilter()));
+    return students()
+      .filter(item => areSimilar(JSON.stringify(item), textFilter()))
+      .filter(s => !s.is_deleted);
   });
   const value = {
     students,

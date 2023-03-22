@@ -4,7 +4,7 @@ import { Appointment } from '~/entities/Appointment';
 import { AppointmentService } from '~/services/AppointmentService';
 
 export type AppointmentContextProps = {
-  appointment: Accessor<Appointment[]>;
+  appointments: Accessor<Appointment[]>;
   filteredAppointments: Accessor<Appointment[]>;
   finishedAppointments: Accessor<Appointment[]>;
   ammountToReceive: Accessor<number>;
@@ -19,17 +19,17 @@ export type AppointmentContextProps = {
 export const AppointmentContext = createContext({} as AppointmentContextProps);
 
 export const AppointmentProvider = (props: { children: JSX.Element }) => {
-  const [appointment, setAppointments] = createSignal<Appointment[]>([]);
+  const [appointments, setAppointments] = createSignal<Appointment[]>([]);
   const [dateFilter, setDateFilter] = createSignal(new Date());
   const [loading, setLoading] = createSignal(false);
   const dateTextFilter = createMemo(() => {
     return formatISO(dateFilter()).split('T')[0];
   });
   const filteredAppointments = createMemo(() => {
-    return appointment().filter(appointment => isSameDay(appointment.date, dateFilter()));
+    return appointments().filter(appointment => isSameDay(appointment.date, dateFilter()));
   });
   const finishedAppointments = createMemo(() => {
-    return appointment().filter(
+    return appointments().filter(
       appointment => !appointment.is_cancelled && !appointment.is_paid && isPast(appointment.date),
     );
   });
@@ -40,7 +40,7 @@ export const AppointmentProvider = (props: { children: JSX.Element }) => {
   });
 
   const value = {
-    appointment,
+    appointments,
     filteredAppointments,
     finishedAppointments,
     ammountToReceive,
@@ -55,7 +55,12 @@ export const AppointmentProvider = (props: { children: JSX.Element }) => {
       setLoading(false);
     },
     async onLeaveLast100Appointments() {
+      setLoading(true);
       await AppointmentService.leaveLastAppointments(100);
+      setAppointments([]);
+      const a = await AppointmentService.getAppointments();
+      setAppointments(a);
+      setLoading(false);
     },
     onDateFilterChange(v: string) {
       setDateFilter(parseISO(v));

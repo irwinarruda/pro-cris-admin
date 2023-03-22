@@ -24,11 +24,11 @@ export default function Admin() {
 }
 
 function ActionsList() {
-  const { onLeaveLast100Appointments } = useAppointment();
+  const { loading, onLeaveLast100Appointments } = useAppointment();
 
   return (
     <div class="flex items-center justify-center max-w-7xl mx-auto h-16 px-6 overflow-hidden">
-      <Button class="bg-gray-500 hover:bg-gray-600" onClick={onLeaveLast100Appointments}>
+      <Button onClick={onLeaveLast100Appointments} disabled={loading()}>
         Deixar apenas últimas 100 aulas
       </Button>
     </div>
@@ -48,7 +48,8 @@ function StudentsList() {
       <h2 class="text-black text-2xl font-semibold">
         Alunos{' '}
         <span class="text-md">
-          | {finishedAppointments().length} aulas | {ammountToReceive().toLocaleString('pt-BR')} reais
+          | {finishedAppointments().length} aulas | {ammountToReceive().toLocaleString('pt-BR')} reais |{' '}
+          {filteredStudents().length} alunos
         </span>
       </h2>
       <div class="flex mt-2">
@@ -109,7 +110,8 @@ function checkDateStatus(date: Date, dateBegin: Date, dateEnd: Date): keyof type
 }
 
 function AppointmentsList() {
-  const { filteredAppointments, getAppointments, loading, dateTextFilter, onDateFilterChange } = useAppointment();
+  const { appointments, filteredAppointments, getAppointments, loading, dateTextFilter, onDateFilterChange } =
+    useAppointment();
   const { students } = useStudent();
   const appointmentWithStudent = createMemo(() => {
     return filteredAppointments().map(appointment => ({
@@ -124,7 +126,9 @@ function AppointmentsList() {
 
   return (
     <div class="flex flex-col w-1/2">
-      <h2 class="text-black text-2xl font-semibold">Rotina</h2>
+      <h2 class="text-black text-2xl font-semibold">
+        Rotina <span class="text-md">| {appointments().length} aulas</span>
+      </h2>
       <div class="flex mt-2">
         <TextField type="date" value={dateTextFilter()} onChange={onDateFilterChange} />
         <Button class="ml-3" onClick={getAppointments}>

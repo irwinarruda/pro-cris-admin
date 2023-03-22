@@ -1,4 +1,4 @@
-import { collection, query, getDocs, orderBy } from 'firebase/firestore';
+import { collection, query, getDocs, doc, orderBy, setDoc, deleteDoc } from 'firebase/firestore';
 import { Appointment } from '~/entities/Appointment';
 import { ProCrisError } from '~/entities/ProCrisError';
 
@@ -40,13 +40,16 @@ export class AppointmentService {
       } as Appointment;
       appointments.push(obj);
     }
-    console.log('appointments', appointments);
-    console.log('appointmentsLength', appointments.length);
-    const appointmentsToDelete = [] as Appointment[];
-    for (let i = ammountLeft; i < appointments.length - 1; i++) {
-      appointmentsToDelete.push(appointments[i]);
+    for (let i = ammountLeft - 1; i < appointments.length - 1; i++) {
+      const appointmentsDoc = doc(firestore, `users/${auth.currentUser.uid}/appointments/${appointments[i].id}`);
+      const oldAppointmentsDoc = doc(firestore, `users/${auth.currentUser.uid}/old_appointments/${appointments[i].id}`);
+      const { id, ...oldAppointment } = appointments[i];
+      try {
+        await setDoc(oldAppointmentsDoc, oldAppointment);
+        await deleteDoc(appointmentsDoc);
+      } catch (err) {
+        console.log('err', err);
+      }
     }
-    console.log('appointmentsToDelete ', appointmentsToDelete);
-    console.log('appointmentsToDeleteLength', appointmentsToDelete.length);
   }
 }
