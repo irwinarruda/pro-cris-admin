@@ -11,6 +11,7 @@
     "types": [
       "solid-start/env"
     ],
+    "outDir": "dist",
     "baseUrl": "./",
     "paths": {
       "~/*": [
