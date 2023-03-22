@@ -24,12 +24,12 @@ export default function Admin() {
 }
 
 function ActionsList() {
-  const { loading, onLeaveLast100Appointments } = useAppointment();
+  const { loading, onLeaveLastAppointments } = useAppointment();
 
   return (
     <div class="flex items-center justify-center max-w-7xl mx-auto h-16 px-6 overflow-hidden">
-      <Button onClick={onLeaveLast100Appointments} disabled={loading()}>
-        Deixar apenas últimas 100 aulas
+      <Button onClick={() => onLeaveLastAppointments(250)} disabled={loading()}>
+        Deixar apenas últimas 250 aulas
       </Button>
     </div>
   );
