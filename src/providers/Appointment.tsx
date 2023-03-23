@@ -21,10 +21,14 @@ export const AppointmentContext = createContext({} as AppointmentContextProps);
 
 export const AppointmentProvider = (props: { children: JSX.Element }) => {
   const [appointments, setAppointments] = createSignal<Appointment[]>([]);
-  const [dateFilter, setDateFilter] = createSignal(new Date());
+  const [dateTextFilter, setDateTextFilter] = createSignal(formatISO(new Date()).split('T')[0]);
   const [loading, setLoading] = createSignal(false);
-  const dateTextFilter = createMemo(() => {
-    return formatISO(dateFilter()).split('T')[0];
+  const dateFilter = createMemo(() => {
+    try {
+      return parseISO(dateTextFilter());
+    } catch (_) {
+      return new Date(-8640000000000000);
+    }
   });
   const filteredAppointments = createMemo(() => {
     return appointments().filter(appointment => isSameDay(appointment.date, dateFilter()));
@@ -75,7 +79,7 @@ export const AppointmentProvider = (props: { children: JSX.Element }) => {
       setLoading(false);
     },
     onDateFilterChange(v: string) {
-      setDateFilter(parseISO(v));
+      setDateTextFilter(v);
     },
   };
   return <AppointmentContext.Provider value={value}>{props.children}</AppointmentContext.Provider>;

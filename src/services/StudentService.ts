@@ -1,4 +1,4 @@
-import { getDoc, getDocs, orderBy, query, collection } from 'firebase/firestore';
+import { getDocs, orderBy, query, collection } from 'firebase/firestore';
 
 import { Appointment } from '~/entities/Appointment';
 import { Cost } from '~/entities/Cost';
