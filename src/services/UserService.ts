@@ -1,4 +1,4 @@
-import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { signInWithEmailAndPassword, signOut, updatePassword } from 'firebase/auth';
 
 import { User } from '~/entities/User';
 

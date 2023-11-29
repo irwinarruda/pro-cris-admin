@@ -20,7 +20,7 @@ export default function SignIn() {
 
   return (
     <div class="h-full pt-40">
-      <div class="mx-auto w-3/12 rounded-xl overflow-hidden bg-alpha-white border-gold-500 border-2">
+      <div class="mx-auto w-96 rounded-xl overflow-hidden bg-alpha-white border-gold-500 border-2">
         <div class="flex items-center justify-center w-full py-6 bg-purple-500">
           <ProCrisLogo class="w-56" />
         </div>

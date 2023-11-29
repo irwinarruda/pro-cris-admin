@@ -48,8 +48,7 @@ function StudentsList() {
       <h2 class="text-black text-2xl font-semibold">
         Alunos{' '}
         <span class="text-md">
-          | {finishedAppointments().length} aulas | {ammountToReceive().toLocaleString('pt-BR')} reais |{' '}
-          {filteredStudents().length} alunos
+          | {finishedAppointments().length} aulas | {filteredStudents().length} alunos
         </span>
       </h2>
       <div class="flex mt-2">
@@ -70,13 +69,16 @@ function StudentsList() {
               style={{ 'background-color': student.color }}
             >
               <div class="flex flex-[1.5] items-center justify-start">
-                <img class="w-10 rounded-full" src={student.avatar || '/emoji-placeholder.png'} />
+                <img
+                  class="w-10 rounded-full"
+                  src={'/emoji-placeholder.png' || student.avatar || '/emoji-placeholder.png'}
+                />
                 <div class="ml-2 overflow-hidden">
                   <p class="text-md truncate">
-                    Aluno(a): <span class="font-bold">{student.name}</span>
+                    Aluno(a): <span class="font-bold">{'Mock Name' || student.name}</span>
                   </p>
                   <p class="text-sm truncate">
-                    Responsável: <span class="font-bold">{student.phone}</span>
+                    Responsável: <span class="font-bold">{'(00) 00000-0000' || student.phone}</span>
                   </p>
                 </div>
               </div>
@@ -160,14 +162,19 @@ function AppointmentsList() {
                   style={{ 'background-color': appointment.student?.color }}
                 >
                   <div class="flex flex-[1.5] items-center justify-start">
-                    <img class="w-10 rounded-full" src={appointment.student?.avatar || '/emoji-placeholder.png'} />
+                    <img
+                      class="w-10 rounded-full"
+                      src={'/emoji-placeholder.png' || appointment.student?.avatar || '/emoji-placeholder.png'}
+                    />
                     <div class="ml-2 overflow-hidden">
                       <p class="text-md truncate">
-                        Aluno(a): <span class="font-bold">{appointment.student?.name}</span>
+                        Aluno(a): <span class="font-bold">{'Mock Name' || appointment.student?.name}</span>
                       </p>
                       <p class="text-sm truncate">
-                        Observation:{' '}
-                        <span class="font-bold">{appointment.student?.observation || 'Sem observação'}</span>
+                        Observação:{' '}
+                        <span class="font-bold">
+                          {'Sem observação' || appointment.student?.observation || 'Sem observação'}
+                        </span>
                       </p>
                     </div>
                   </div>
