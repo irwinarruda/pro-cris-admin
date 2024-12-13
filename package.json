@@ -37,8 +37,5 @@
     "sweetalert2": "^11.7.3",
     "undici": "^5.15.1"
   },
-  "packageManager": "pnpm@5.4.12",
-  "engines": {
-    "node": ">=18"
-  }
+  "packageManager": "pnpm@5.4.12"
 }
