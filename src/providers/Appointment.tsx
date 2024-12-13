@@ -13,6 +13,7 @@ export type AppointmentContextProps = {
   dateTextFilter: Accessor<string>;
   loading: Accessor<boolean>;
   onLeaveLastAppointments: (ammount: number) => Promise<void>;
+  onLeaveLastThreeMonths: () => Promise<void>;
   getAppointments: () => Promise<void>;
   onDateFilterChange: (v: string) => void;
 };
@@ -74,6 +75,25 @@ export const AppointmentProvider = (props: { children: JSX.Element }) => {
       setLoading(true);
       setAppointments([]);
       await AppointmentService.leaveLastAppointments(ammount);
+      const a = await AppointmentService.getAppointments();
+      setAppointments(a);
+      setLoading(false);
+    },
+    async onLeaveLastThreeMonths() {
+      const { isConfirmed } = await Swal.fire({
+        icon: 'warning',
+        title: 'Atenção',
+        html: `Deseja mesmo deixar apenas os últimos 3 messes?`,
+        confirmButtonText: 'Excluir',
+        confirmButtonColor: '#EE584F',
+        cancelButtonText: 'Cancelar',
+        showCancelButton: true,
+        reverseButtons: true,
+      });
+      if (!isConfirmed) return;
+      setLoading(true);
+      setAppointments([]);
+      await AppointmentService.leaveLastThreeMonths();
       const a = await AppointmentService.getAppointments();
       setAppointments(a);
       setLoading(false);

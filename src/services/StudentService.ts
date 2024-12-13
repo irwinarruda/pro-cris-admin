@@ -6,6 +6,7 @@ import { ProCrisError } from '~/entities/ProCrisError';
 import { Schedule } from '~/entities/Schedule';
 import { Student } from '~/entities/Student';
 import { auth, firestore } from './firebaseConfig';
+import { AppointmentService } from './AppointmentService';
 
 type GetStudentsParams = {
   costs?: boolean;
@@ -32,9 +33,7 @@ export class StudentService {
         ...doc.data(),
       } as Student;
       if (params.appointments) {
-        const appointmentsColl = collection(firestore, `${doc.ref.path}/appointments`);
-        const appointmentsSnp = await getDocs(appointmentsColl);
-        obj.appointments = appointmentsSnp.docs.map(doc => ({ id: doc.id, ...doc.data() } as Appointment));
+        obj.appointments = await AppointmentService.listAppointmentsByStudent(doc.id);
       }
       if (params.schedules) {
         const schedulesColl = collection(firestore, `${doc.ref.path}/schedules`);
