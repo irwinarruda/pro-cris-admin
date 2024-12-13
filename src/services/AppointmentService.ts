@@ -47,6 +47,51 @@ export class AppointmentService {
     return appointments;
   }
 
+  public static async listAppointmentsByDateRange(initialDate: Date, finalDate: Date): Promise<Appointment[]> {
+    if (!auth.currentUser) {
+      throw { message: 'Usuário não autenticado' };
+    }
+    const appointmentsColl = collection(firestore, `users/${auth.currentUser.uid}/old_appointments`);
+    const appointmentsSnp = await getDocs(
+      query(appointmentsColl, orderBy('date', 'asc'), where('date', '>=', initialDate), where('date', '<=', finalDate)),
+    );
+    const appointments = [] as Appointment[];
+    for (let doc of appointmentsSnp.docs) {
+      const data = doc.data();
+      const obj = {
+        ...data,
+        id: doc.id,
+        date: data.date.toDate(),
+      } as Appointment;
+      appointments.push(obj);
+    }
+    return appointments;
+  }
+
+  public static async get2023Money() {
+    const start2023 = new Date('2023-01-01');
+    const end2023 = new Date('2023-12-31');
+    const appointments = await this.listAppointmentsByDateRange(start2023, end2023);
+    const ammount = appointments
+      .filter(appointment => !appointment.is_cancelled && appointment.is_paid)
+      .reduce((previous, current) => {
+        return previous + Number(current.cost.price.replace('R$', ''));
+      }, 0);
+    return ammount;
+  }
+
+  public static async get2024Money() {
+    const start2023 = new Date('2024-01-01');
+    const end2023 = new Date('2024-12-31');
+    const appointments = await this.listAppointmentsByDateRange(start2023, end2023);
+    const ammount = appointments
+      .filter(appointment => !appointment.is_cancelled && appointment.is_paid)
+      .reduce((previous, current) => {
+        return previous + Number(current.cost.price.replace('R$', ''));
+      }, 0);
+    return ammount;
+  }
+
   public static async leaveLastAppointments(ammountLeft: number) {
     if (!auth.currentUser) {
       throw new ProCrisError({ title: 'Usuário não autenticado', message: 'Faça login para continuar' });
